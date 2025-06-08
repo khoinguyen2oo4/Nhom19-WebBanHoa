@@ -1,0 +1,47 @@
+﻿@model List<Nhom19_WebBanHoa.Models.Flower>
+@{
+    ViewData["Title"] = "Flowers";
+}
+
+<div class="container mt-4">
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+            <li class="breadcrumb-item active">Flowers</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <!-- Danh mục bên trái -->
+        <div class="col-md-3">
+            <h5>Danh mục</h5>
+            <ul class="list-group">
+                <li class="list-group-item"><input type="checkbox" /> Tất cả Sản Phẩm</li>
+                <li class="list-group-item"><input type="checkbox" /> Hoa Khai Trương</li>
+                <li class="list-group-item"><input type="checkbox" /> Hoa Cưới</li>
+                <li class="list-group-item"><input type="checkbox" /> Hoa Sinh Nhật</li>
+            </ul>
+        </div>
+
+        <!-- Sản phẩm bên phải -->
+        <div class="col-md-9">
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <a href="/Product/ProductDetail/@item.Id">
+                                <img src="~/images/@item.HinhAnh" class="card-img-top" alt="@item.Ten">
+                            </a>
+
+                            <div class="card-body text-center">
+                                <h5 class="card-title">@item.Ten</h5>
+                                <p class="text-danger fw-bold">@item.Gia.ToString("N0") ₫</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

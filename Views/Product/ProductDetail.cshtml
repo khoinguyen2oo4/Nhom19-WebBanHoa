@@ -1,0 +1,19 @@
+﻿@model Nhom19_WebBanHoa.Models.Flower
+@{
+    ViewData["Title"] = "Chi tiết sản phẩm";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-5">
+            <img src="~/images/@Model.HinhAnh" class="img-fluid rounded shadow" alt="@Model.Ten" />
+        </div>
+        <div class="col-md-7">
+            <h3>@Model.Ten</h3>
+            <p class="text-muted">@Model.MoTa</p>
+            <h4 class="text-danger">@Model.Gia.ToString("N0") ₫</h4>
+
+            <a href="/Product/ProductList" class="btn btn-secondary mt-3">Quay lại</a>
+        </div>
+    </div>
+</div>
