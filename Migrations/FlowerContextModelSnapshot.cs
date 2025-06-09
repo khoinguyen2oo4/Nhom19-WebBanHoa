@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nhom19_WebBanHoa.Models;
+using System;
 
 #nullable disable
 
@@ -21,6 +22,7 @@ namespace Nhom19_WebBanHoa.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            // Bảng Flower
             modelBuilder.Entity("Nhom19_WebBanHoa.Models.Flower", b =>
             {
                 b.Property<int>("Id")
@@ -50,6 +52,7 @@ namespace Nhom19_WebBanHoa.Migrations
                 b.ToTable("Flowers");
             });
 
+            // Bảng User
             modelBuilder.Entity("Nhom19_WebBanHoa.Models.User", b =>
             {
                 b.Property<int>("Id")
@@ -99,6 +102,39 @@ namespace Nhom19_WebBanHoa.Migrations
                         Role = "admin",
                         Username = "admin"
                     });
+            });
+
+            // ✅ Thêm bảng Order từ phần Thiện làm
+            modelBuilder.Entity("Nhom19_WebBanHoa.Models.Order", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
+
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                b.Property<string>("Address")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<string>("CustomerName")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<DateTime>("OrderDate")
+                    .HasColumnType("datetime2");
+
+                b.Property<string>("Phone")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<string>("Status")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
+
+                b.HasKey("Id");
+
+                b.ToTable("Orders");
             });
 #pragma warning restore 612, 618
         }

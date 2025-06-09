@@ -12,6 +12,7 @@ namespace Nhom19_WebBanHoa.Models
 
         public DbSet<Flower> Flowers { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

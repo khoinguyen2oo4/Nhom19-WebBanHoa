@@ -1,0 +1,20 @@
+﻿@model Nhom19_WebBanHoa.Models.Order
+
+<h2>Chi tiết đơn hàng</h2>
+
+<p><strong>Mã đơn:</strong> @Model.Id</p>
+<p><strong>Ngày đặt:</strong> @Model.OrderDate.ToString("dd/MM/yyyy")</p>
+<p><strong>Trạng thái hiện tại:</strong> @Model.Status</p>
+
+<form asp-action="UpdateStatus" method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <label for="newStatus">Cập nhật trạng thái:</label>
+    <select name="newStatus" class="form-control">
+        <option value="Chờ xử lý">Chờ xử lý</option>
+        <option value="Đang giao">Đang giao</option>
+        <option value="Đã giao">Đã giao</option>
+        <option value="Đã hủy">Đã hủy</option>
+    </select>
+    <br />
+    <button type="submit" class="btn btn-primary">Cập nhật</button>
+</form>
