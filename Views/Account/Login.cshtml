@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "Login";
+}
+
+<h2>Đăng nhập</h2>
+
+@if (TempData["RegisterSuccess"] != null)
+{
+    <div class="alert alert-success">@TempData["RegisterSuccess"]</div>
+}
+
+<form asp-action="Login" method="post">
+    <div class="form-group">
+        <label for="username">Username</label>
+        <input name="username" class="form-control" autocomplete="username" />
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input name="password" type="password" class="form-control" autocomplete="current-password" />
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+    <a asp-action="Register" class="btn btn-link">Đăng ký</a>
+</form>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="text-danger">
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <div>@error.ErrorMessage</div>
+        }
+    </div>
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

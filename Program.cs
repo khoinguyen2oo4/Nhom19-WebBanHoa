@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Nhom19_WebBanHoa.Models;
-
+using Microsoft.AspNetCore.Session;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<FlowerContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddSession();
 
 
 
@@ -24,9 +25,9 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
-
+app.UseSession(); 
 app.UseAuthorization();
-
+app.UseStaticFiles();
 app.MapStaticAssets();
 
 app.MapControllerRoute(

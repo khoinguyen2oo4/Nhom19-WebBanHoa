@@ -1,0 +1,28 @@
+﻿@model Nhom19_WebBanHoa.Models.User
+
+@{
+    ViewData["Title"] = "Thông tin người dùng";
+}
+
+<h2>Thông tin người dùng</h2>
+
+<div class="card" style="max-width: 400px;">
+    <div class="card-body">
+        <div class="text-center mb-3">
+            <img src="~/uploads/@(Model.Avatar ?? "default-avatar.png")" alt="avatar" style="width:100px;height:100px;object-fit:cover;border-radius:50%;">
+        </div>
+        <dl class="row">
+            <dt class="col-sm-4">Tên đăng nhập</dt>
+            <dd class="col-sm-8">@Html.Encode(Model.Username)</dd>
+            <dt class="col-sm-4">Họ tên</dt>
+            <dd class="col-sm-8">@Html.Encode(Model.FullName)</dd>
+            <dt class="col-sm-4">Email</dt>
+            <dd class="col-sm-8">@Html.Encode(Model.Email)</dd>
+            <dt class="col-sm-4">Số điện thoại</dt>
+            <dd class="col-sm-8">@Html.Encode(Model.PhoneNumber)</dd>
+            <dt class="col-sm-4">Vai trò</dt>
+            <dd class="col-sm-8">@Html.Encode(Model.Role)</dd>
+        </dl>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Sửa thông tin</a>
+    </div>
+</div>

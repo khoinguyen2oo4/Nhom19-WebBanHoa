@@ -27,24 +27,94 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
+                    <ul class="navbar-nav align-items-center">
+                        @{
+                            var lang = Context.Session.GetString("Lang") ?? "vi";
+                        }
+                        <li class="nav-item dropdown me-2">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="langDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="me-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@(lang == "vi" ? "Tiếng Việt" : "English")">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-globe" viewBox="0 0 16 16">
+                                        <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0 0 14A7 7 0 0 0 8 1z" />
+                                        <path d="M8 1a7 7 0 0 1 6.468 4.37c-.635.13-1.29.23-1.968.3C11.5 3.5 9.5 2 8 2s-3.5 1.5-4.5 2.67c-.678-.07-1.333-.17-1.968-.3A7 7 0 0 1 8 1zm0 14a7 7 0 0 1-6.468-4.37c.635-.13 1.29-.23 1.968-.3C4.5 12.5 6.5 14 8 14s3.5-1.5-4.5-2.67c.678.07 1.333.17 1.968.3A7 7 0 0 1 8 15z" />
+                                    </svg>
+                                </span>
+                                <span class="d-none d-md-inline">@((lang == "vi") ? "VI" : "EN")</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="langDropdown">
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Language" asp-action="Set" asp-route-culture="vi" asp-route-returnUrl="@Context.Request.Path">🇻🇳 Tiếng Việt</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Language" asp-action="Set" asp-route-culture="en" asp-route-returnUrl="@Context.Request.Path">🇬🇧 English</a>
+                                </li>
+                            </ul>
+                        </li>
+                        @if (Context.Session.GetString("Username") == null)
+                        {
+                            <li class="nav-item">
+                                <a class="btn btn-outline-primary ms-2" asp-controller="Account" asp-action="Login">Đăng nhập</a>
+                            </li>
+                        }
+                        else
+                        {
+                            var username = Context.Session.GetString("Username");
+                            var avatar = Context.Session.GetString("Avatar") ?? "default-avatar.png";
+                            var role = Context.Session.GetString("Role") ?? "";
+                            <li class="nav-item dropdown d-flex align-items-center">
+                                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="cursor:pointer;">
+                                    <img src="~/uploads/@avatar" alt="avatar" style="width:32px;height:32px;object-fit:cover;border-radius:50%;margin-right:8px;">
+                                    <span>@Html.Encode(username)</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Account" asp-action="Index">Thông tin người dùng</a>
+                                    </li>
+                                    @if (role == "admin")
+                                    {
+                                        <li>
+                                            <a class="dropdown-item" asp-controller="AdminUsers" asp-action="Index">Quản lý người dùng</a>
+                                        </li>
+                                    }
+                                    <li>
+                                        <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;">
+                                            <button type="submit" class="dropdown-item">Đăng xuất</button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                    </ul>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
+    <main role="main" class="container">
+        @RenderBody()
+    </main>
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2025 - Nhom19_WebBanHoa - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2023 - Nhom19_WebBanHoa - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+    <script>
+        // Hide login/logout success alerts after 1 second
+        setTimeout(function () {
+            var loginAlert = document.getElementById('login-success-alert');
+            if (loginAlert) loginAlert.style.display = 'none';
+            var logoutAlert = document.getElementById('logout-success-alert');
+            if (logoutAlert) logoutAlert.style.display = 'none';
+        }, 1000);
+
+        // Enable Bootstrap tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+            new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    </script>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

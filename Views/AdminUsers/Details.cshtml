@@ -1,0 +1,29 @@
+﻿@model Nhom19_WebBanHoa.Models.User
+@{
+    ViewData["Title"] = "Chi tiết người dùng";
+}
+
+<h2>Chi tiết người dùng</h2>
+<div class="card" style="max-width: 400px;">
+    <div class="card-body">
+        <div class="text-center mb-3">
+            <img src="~/uploads/@(Model.Avatar ?? "default-avatar.png")" alt="avatar" style="width:100px;height:100px;object-fit:cover;border-radius:50%;">
+        </div>
+        <dl class="row">
+            <dt class="col-sm-4">Tên đăng nhập</dt>
+            <dd class="col-sm-8">@Model.Username</dd>
+            <dt class="col-sm-4">Họ tên</dt>
+            <dd class="col-sm-8">@Model.FullName</dd>
+            <dt class="col-sm-4">Email</dt>
+            <dd class="col-sm-8">@Model.Email</dd>
+            <dt class="col-sm-4">Số điện thoại</dt>
+            <dd class="col-sm-8">@Model.PhoneNumber</dd>
+            <dt class="col-sm-4">Vai trò</dt>
+            <dd class="col-sm-8">@Model.Role</dd>
+        </dl>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Sửa</a>
+        <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+    </div>
+</div>
+
+@* Ensure this file is saved with UTF-8 encoding in your editor *@

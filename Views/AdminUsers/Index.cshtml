@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Nhom19_WebBanHoa.Models.User>
+@{
+    ViewData["Title"] = "Quản lý người dùng";
+}
+
+<h2>Quản lý người dùng</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Avatar</th>
+            <th>Tên đăng nhập</th>
+            <th>Họ tên</th>
+            <th>Email</th>
+            <th>Số điện thoại</th>
+            <th>Vai trò</th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var user in Model)
+{
+    <tr>
+        <td>
+            <img src="~/uploads/@(user.Avatar ?? "default-avatar.png")" style="width:40px;height:40px;object-fit:cover;border-radius:50%;">
+        </td>
+        <td>@user.Username</td>
+        <td>@user.FullName</td>
+        <td>@user.Email</td>
+        <td>@user.PhoneNumber</td>
+        <td>@user.Role</td>
+        <td>
+            <a asp-action="Details" asp-route-id="@user.Id" class="btn btn-info btn-sm">Xem</a>
+            <a asp-action="Edit" asp-route-id="@user.Id" class="btn btn-warning btn-sm">Sửa</a>
+            <a asp-action="Delete" asp-route-id="@user.Id" class="btn btn-danger btn-sm">Xóa</a>
+        </td>
+    </tr>
+}
+    </tbody>
+</table>
+
+@* Ensure this file is saved as UTF-8 without BOM *@

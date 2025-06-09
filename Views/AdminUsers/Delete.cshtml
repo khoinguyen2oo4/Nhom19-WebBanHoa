@@ -1,0 +1,15 @@
+﻿@* Đảm bảo file này được lưu với encoding UTF-8 (không BOM) để hiển thị đúng tiếng Việt *@
+@model Nhom19_WebBanHoa.Models.User
+@{
+    ViewData["Title"] = "Xóa người dùng";
+}
+
+<h2>Xóa người dùng</h2>
+<div class="alert alert-danger">
+    Bạn có chắc chắn muốn xóa người dùng <strong>@Model.Username</strong> không?
+</div>
+<form asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Xóa</button>
+    <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+</form>

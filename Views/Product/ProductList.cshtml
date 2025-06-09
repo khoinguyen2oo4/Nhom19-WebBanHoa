@@ -1,4 +1,5 @@
-﻿@model List<Nhom19_WebBanHoa.Models.Flower>
+﻿@* Đảm bảo file này được lưu với encoding UTF-8 (không BOM) để hiển thị đúng tiếng Việt *@
+@model List<Nhom19_WebBanHoa.Models.Flower>
 @{
     ViewData["Title"] = "Flowers";
 }
@@ -31,12 +32,13 @@
                     <div class="col-md-4 mb-4">
                         <div class="card h-100">
                             <a href="/Product/ProductDetail/@item.Id">
-                                <img src="~/images/@item.HinhAnh" class="card-img-top" alt="@item.Ten">
+                                <img src="~/images/@item.HinhAnh" class="card-img-top" alt="@Html.Encode(item.Ten)">
                             </a>
-
                             <div class="card-body text-center">
-                                <h5 class="card-title">@item.Ten</h5>
-                                <p class="text-danger fw-bold">@item.Gia.ToString("N0") ₫</p>
+                                <h5 class="card-title">@Html.Encode(item.Ten)</h5>
+                                <p class="card-text">@Html.Encode(item.MoTa)</p>
+                                <p class="card-text text-danger fw-bold">@item.Gia.ToString("N0") ₫</p>
+                                <a href="/Product/ProductDetail/@item.Id" class="btn btn-primary">Xem chi tiết</a>
                             </div>
                         </div>
                     </div>
