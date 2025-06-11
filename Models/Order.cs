@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Nhom19_WebBanHoa.Models
@@ -11,14 +12,26 @@ namespace Nhom19_WebBanHoa.Models
         public DateTime OrderDate { get; set; }
 
         [Required]
-        public string Status { get; set; }
+        public string Status { get; set; }  // VD: "Đang xử lý", "Đã giao", "Đã huỷ"
 
-        // Thêm các thông tin khác nếu cần, ví dụ:
+        [Required]
         public string CustomerName { get; set; }
+
+        [Required]
+        [EmailAddress]
+        public string CustomerEmail { get; set; }
+
+        [Required]
         public string Address { get; set; }
+
+        [Required]
+        [Phone]
         public string Phone { get; set; }
 
-        // Bạn có thể thêm danh sách chi tiết đơn hàng nếu cần
-        // public List<OrderDetail> OrderDetails { get; set; }
+        // Tổng tiền của đơn hàng
+        public decimal TotalAmount { get; set; }
+
+        // Danh sách chi tiết đơn hàng
+        public List<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
     }
 }

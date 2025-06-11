@@ -1,0 +1,105 @@
+﻿@model Nhom19_WebBanHoa.Models.Cart
+
+<h2>Giỏ hàng</h2>
+
+<!-- Form để xóa các sản phẩm đã chọn -->
+<form action="/Cart/DeleteSelectedItems" method="post">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Chọn</th>
+                <th>Sản phẩm</th>
+                <th>Số lượng</th>
+                <th>Giá</th>
+                <th>Tổng</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.CartItems)
+            {
+                <tr>
+                    <!-- Checkbox để chọn sản phẩm -->
+                    <td>
+                        <input type="checkbox" name="selectedItems" value="@item.FlowerId" />
+                    </td>
+                    <td>@item.Flower.Ten</td>
+                    <td>
+                        <!-- Nút giảm số lượng -->
+                        <button type="button" class="btn btn-outline-secondary btn-sm change-quantity" data-action="decrement" data-id="@item.FlowerId">-</button>
+
+                        <!-- Số lượng -->
+                        <input type="text" class="form-control w-25 d-inline-block quantity" value="@item.Quantity" readonly />
+
+                        <!-- Nút tăng số lượng -->
+                        <button type="button" class="btn btn-outline-secondary btn-sm change-quantity" data-action="increment" data-id="@item.FlowerId">+</button>
+                    </td>
+                    <td>@item.Flower.Gia.ToString("C")</td>
+                    <td>@((item.Flower.Gia * item.Quantity).ToString("C"))</td>
+                    <td>
+                        <!-- Form POST cho xóa -->
+                        @using (Html.BeginForm("DeleteItem", "Cart", FormMethod.Post, new { style = "display:inline;" }))
+                        {
+                            @Html.AntiForgeryToken()  <!-- Bảo vệ chống CSRF -->
+                            @Html.Hidden("id", item.FlowerId)  <!-- ID của sản phẩm cần xóa -->
+                            
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h3>Tổng tiền: @Model.CartItems.Sum(item => item.Flower.Gia * item.Quantity).ToString("C")</h3>
+
+    <button type="submit" class="btn btn-danger mt-3">Xóa các sản phẩm đã chọn</button>
+</form>
+
+<form action="/Order/PlaceOrder" method="post">
+    <button type="submit" class="btn btn-primary">Đặt hàng</button>
+</form>
+
+<!-- Thêm script để xử lý sự kiện tăng/giảm số lượng -->
+<script>
+    // Lắng nghe sự kiện click trên nút tăng giảm số lượng
+    document.querySelectorAll('.change-quantity').forEach(function(button) {
+        button.addEventListener('click', function() {
+            var action = this.getAttribute('data-action'); // Lấy hành động (tăng/giảm)
+            var flowerId = this.getAttribute('data-id');  // Lấy ID của sản phẩm
+            var quantityInput = this.closest('tr').querySelector('.quantity'); // Lấy input số lượng tương ứng
+
+            var quantity = parseInt(quantityInput.value);
+
+            if (action === 'increment') {
+                quantity++; // Tăng số lượng
+            } else if (action === 'decrement' && quantity > 1) {
+                quantity--; // Giảm số lượng nhưng không nhỏ hơn 1
+            }
+
+            quantityInput.value = quantity;
+
+            // Gửi yêu cầu cập nhật số lượng sản phẩm
+            updateQuantity(flowerId, quantity);
+        });
+    });
+
+    // Hàm gửi yêu cầu POST để cập nhật số lượng sản phẩm
+    function updateQuantity(flowerId, quantity) {
+        var form = new FormData();
+        form.append('id', flowerId);
+        form.append('quantity', quantity);
+
+        fetch('/Cart/UpdateQuantity', {
+            method: 'POST',
+            body: form
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('Quantity updated successfully!');
+            } else {
+                console.log('Failed to update quantity!');
+            }
+        });
+    }
+</script>

@@ -13,7 +13,37 @@
             <p class="text-muted">@Model.MoTa</p>
             <h4 class="text-danger">@Model.Gia.ToString("N0") ₫</h4>
 
+            <!-- Form Thêm vào giỏ hàng -->
+            <form action="/Cart/AddToCart" method="post">
+                <input type="hidden" name="id" value="@Model.Id" />
+                <!-- Số lượng -->
+                <div class="input-group input-group-sm mb-3" style="max-width: 150px;">
+                    <button class="btn btn-outline-secondary" type="button" id="decrement">-</button>
+                    <input type="number" name="quantity" id="quantity" value="1" min="1" class="form-control" style="width: 60px; text-align: center;" />
+                    <button class="btn btn-outline-secondary" type="button" id="increment">+</button>
+                </div>
+
+                <button type="submit" class="btn btn-primary mt-3">Thêm vào giỏ hàng</button>
+            </form>
+
             <a href="/Product/ProductList" class="btn btn-secondary mt-3">Quay lại</a>
         </div>
     </div>
 </div>
+
+<script>
+    // Điều chỉnh số lượng
+    document.querySelectorAll('#increment, #decrement').forEach(button => {
+        button.addEventListener('click', function() {
+            var quantityInput = document.getElementById('quantity');
+            var currentValue = parseInt(quantityInput.value);
+
+            // Tăng hoặc giảm số lượng
+            if (this.id === 'increment') {
+                quantityInput.value = currentValue + 1;
+            } else if (this.id === 'decrement' && currentValue > 1) {
+                quantityInput.value = currentValue - 1;
+            }
+        });
+    });
+</script>

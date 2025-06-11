@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nhom19_WebBanHoa.Models;
 
@@ -11,9 +12,11 @@ using Nhom19_WebBanHoa.Models;
 namespace Nhom19_WebBanHoa.Migrations
 {
     [DbContext(typeof(FlowerContext))]
-    partial class FlowerContextModelSnapshot : ModelSnapshot
+    [Migration("20250611050925_AddOrderAndCartTables")]
+    partial class AddOrderAndCartTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
