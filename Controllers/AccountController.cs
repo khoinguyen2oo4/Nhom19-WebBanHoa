@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using System.Linq;
 using System;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Nhom19_WebBanHoa.Controllers
 {
@@ -129,7 +131,9 @@ namespace Nhom19_WebBanHoa.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(string username, string password)
+        [HttpPost]
+        public async Task<IActionResult> Login(string username, string password)
+
         {
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
             {
@@ -141,7 +145,19 @@ namespace Nhom19_WebBanHoa.Controllers
             if (user != null)
             {
                 HttpContext.Session.SetString("Username", user.Username);
-                HttpContext.Session.SetString("Role", user.Role ?? "");
+
+                // ✅ Gán Claims để SignalR đọc role và fullname
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim(ClaimTypes.Email, user.Email ?? user.Username),
+                    new Claim(ClaimTypes.Role, user.Role ?? "user"),
+                    new Claim("FullName", user.FullName ?? user.Username)
+                };
+                var identity = new ClaimsIdentity(claims, "Cookies");
+                var principal = new ClaimsPrincipal(identity);
+                await HttpContext.SignInAsync(principal);
+                        HttpContext.Session.SetString("Role", user.Role ?? "");
                 HttpContext.Session.SetString("Avatar", user.Avatar ?? "default-avatar.png");
                 TempData["LoginSuccess"] = "Đăng nhập thành công!";
                 return RedirectToAction("Index", "Home");

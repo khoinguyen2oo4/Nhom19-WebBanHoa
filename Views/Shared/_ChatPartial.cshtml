@@ -1,0 +1,85 @@
+﻿<style>
+    #chatPanel {
+        position: fixed;
+        bottom: 0;
+        right: 20px;
+        width: 350px;
+        height: 400px;
+        background: white;
+        border: 1px solid #ccc;
+        display: none;
+        flex-direction: column;
+        z-index: 9999;
+        box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    #closeChatBtn {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        border: none;
+        background: transparent;
+        font-size: 20px;
+        cursor: pointer;
+    }
+    #customerList {
+        height: 100px;
+        overflow-y: auto;
+        background: #eee;
+        padding: 5px;
+        border-bottom: 1px solid #ddd;
+    }
+    .customer-item {
+        padding: 5px;
+        cursor: pointer;
+    }
+    .customer-item.unread::after {
+        content: '•';
+        color: red;
+        margin-left: 5px;
+    }
+    #chatContent {
+        flex: 1;
+        overflow-y: auto;
+        padding: 5px;
+        font-size: 14px;
+    }
+    #chatInput {
+        display: flex;
+        gap: 5px;
+        padding: 5px;
+        border-top: 1px solid #ddd;
+    }
+    #openChatBtn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 9998;
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+        display: block;
+        box-shadow: 0 0 8px rgba(0,0,0,0.2);
+        cursor: pointer;
+    }
+</style>
+
+<div id="chatPanel">
+    <button id="closeChatBtn">&times;</button>
+    <div id="customerList"></div>
+    <div id="chatContent"><em>Chọn khách để bắt đầu trò chuyện</em></div>
+    <div id="chatInput">
+        <input type="text" id="messageInput" class="form-control" placeholder="Nhập tin nhắn..." />
+        <button id="sendButton" class="btn btn-danger">Gửi</button>
+    </div>
+</div>
+
+<button id="openChatBtn">💬</button>
+<audio id="pingSound" src="https://www.myinstants.com/media/sounds/messenger.mp3"></audio>
+<div id="toastContainer" style="position: fixed; bottom: 420px; right: 20px; z-index: 99999;"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.0/signalr.min.js"></script>
+<script src="/js/chat.js"></script>

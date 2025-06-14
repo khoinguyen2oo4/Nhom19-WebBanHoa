@@ -13,6 +13,11 @@ namespace Nhom19_WebBanHoa.Controllers
     {
         private readonly FlowerContext _context;
 
+        private bool IsAdmin()
+        {
+            return HttpContext.Session.GetString("Role") == "admin";
+        }
+
         public AdminFlowersController(FlowerContext context)
         {
             _context = context;
@@ -21,23 +26,18 @@ namespace Nhom19_WebBanHoa.Controllers
         // GET: AdminFlowers
         public async Task<IActionResult> Index()
         {
+            if (!IsAdmin()) return RedirectToAction("Login", "Account");
             return View(await _context.Flowers.ToListAsync());
         }
 
         // GET: AdminFlowers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (!IsAdmin()) return RedirectToAction("Login", "Account");
+            if (id == null) return NotFound();
 
-            var flower = await _context.Flowers
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (flower == null)
-            {
-                return NotFound();
-            }
+            var flower = await _context.Flowers.FirstOrDefaultAsync(m => m.Id == id);
+            if (flower == null) return NotFound();
 
             return View(flower);
         }
@@ -45,16 +45,17 @@ namespace Nhom19_WebBanHoa.Controllers
         // GET: AdminFlowers/Create
         public IActionResult Create()
         {
+            if (!IsAdmin()) return RedirectToAction("Login", "Account");
             return View();
         }
 
         // POST: AdminFlowers/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Ten,MoTa,Gia,HinhAnh")] Flower flower)
         {
+            if (!IsAdmin()) return RedirectToAction("Login", "Account");
+
             if (ModelState.IsValid)
             {
                 _context.Add(flower);
@@ -67,30 +68,22 @@ namespace Nhom19_WebBanHoa.Controllers
         // GET: AdminFlowers/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (!IsAdmin()) return RedirectToAction("Login", "Account");
+            if (id == null) return NotFound();
 
             var flower = await _context.Flowers.FindAsync(id);
-            if (flower == null)
-            {
-                return NotFound();
-            }
+            if (flower == null) return NotFound();
+
             return View(flower);
         }
 
         // POST: AdminFlowers/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Ten,MoTa,Gia,HinhAnh")] Flower flower)
         {
-            if (id != flower.Id)
-            {
-                return NotFound();
-            }
+            if (!IsAdmin()) return RedirectToAction("Login", "Account");
+            if (id != flower.Id) return NotFound();
 
             if (ModelState.IsValid)
             {
@@ -101,14 +94,8 @@ namespace Nhom19_WebBanHoa.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!FlowerExists(flower.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    if (!FlowerExists(flower.Id)) return NotFound();
+                    else throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -118,17 +105,11 @@ namespace Nhom19_WebBanHoa.Controllers
         // GET: AdminFlowers/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (!IsAdmin()) return RedirectToAction("Login", "Account");
+            if (id == null) return NotFound();
 
-            var flower = await _context.Flowers
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (flower == null)
-            {
-                return NotFound();
-            }
+            var flower = await _context.Flowers.FirstOrDefaultAsync(m => m.Id == id);
+            if (flower == null) return NotFound();
 
             return View(flower);
         }
@@ -138,6 +119,8 @@ namespace Nhom19_WebBanHoa.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (!IsAdmin()) return RedirectToAction("Login", "Account");
+
             var flower = await _context.Flowers.FindAsync(id);
             if (flower != null)
             {

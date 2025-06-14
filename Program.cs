@@ -3,11 +3,20 @@ using Nhom19_WebBanHoa.Models;
 using Microsoft.AspNetCore.Session;
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
+using Nhom19_WebBanHoa.Hubs;
+
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddAuthentication("Cookies")
+    .AddCookie("Cookies", options =>
+    {
+        options.LoginPath = "/Account/Login";
+    });
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddSignalR();
 
 // K?t n?i database
 builder.Services.AddDbContext<FlowerContext>(options =>
@@ -50,10 +59,13 @@ app.UseRouting();
 app.UseSession();              // Session ph?i ??t tr??c Authorization
 app.UseRequestLocalization();  // Áp d?ng ??nh d?ng ti?n t?/language
 app.UseAuthorization();
+app.UseAuthentication(); // ?? thêm dòng này
 
 // Route m?c ??nh
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapHub<Nhom19_WebBanHoa.Hubs.ChatHub>("/chathub");
 
 app.Run();

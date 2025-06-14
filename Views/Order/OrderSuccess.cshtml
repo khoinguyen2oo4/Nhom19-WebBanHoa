@@ -1,0 +1,40 @@
+﻿@model Nhom19_WebBanHoa.Models.Order
+
+@{
+    ViewData["Title"] = "Đặt hàng thành công";
+}
+
+<h2>🎉 Cảm ơn bạn đã đặt hàng!</h2>
+<p>Thông tin đơn hàng đã được gửi đến email: <strong>@Model.CustomerEmail</strong></p>
+
+<h4>Chi tiết đơn hàng:</h4>
+<ul>
+    <li>Họ tên: @Model.CustomerName</li>
+    <li>Điện thoại: @Model.Phone</li>
+    <li>Địa chỉ: @Model.Address</li>
+    <li>Ngày đặt: @Model.OrderDate.ToString("dd/MM/yyyy HH:mm")</li>
+    <li>Tổng tiền: <strong>@Model.TotalAmount.ToString("N0") đ</strong></li>
+</ul>
+
+<h4>Danh sách sản phẩm:</h4>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Tên hoa</th>
+            <th>Số lượng</th>
+            <th>Giá</th>
+            <th>Thành tiền</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderItems)
+        {
+            <tr>
+                <td>@item.Flower?.Ten</td>
+                <td>@item.Quantity</td>
+                <td>@item.Price.ToString("N0") đ</td>
+                <td>@(item.Quantity * item.Price).đ</td>
+            </tr>
+        }
+    </tbody>
+</table>
